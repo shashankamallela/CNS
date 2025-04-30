@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+
+void caesarCipher(char *text, int shift) {
+    char result[strlen(text)];
+    for (int i = 0; text[i] != '\0'; i++) {
+        char c = text[i];
+        if (c >= 'a' && c <= 'z') {
+            result[i] = (c + shift - 'a') % 26 + 'a';
+        } else if (c >= 'A' && c <= 'Z') {
+            result[i] = (c + shift - 'A') % 26 + 'A';
+        } else {
+            result[i] = c;
+        }
+    }
+    result[strlen(text)] = '\0';
+    printf("Ciphered Text: %s\n", result);
+}
+
+int main() {
+    char text[] = "Hello, World!";
+    int shift = 3;
+    caesarCipher(text, shift);
+    return 0;
+}
