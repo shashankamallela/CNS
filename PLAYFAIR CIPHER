@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define SIZE 5
+
+void createMatrix(char key[], char matrix[SIZE][SIZE]) {
+    int k = 0;
+    int alpha[26] = {0};
+    for (int i = 0; key[i] != '\0'; i++) {
+        if (isalpha(key[i])) {
+            char ch = toupper(key[i]);
+            if (ch == 'J') ch = 'I'; // Treat J as I
+            if (!alpha[ch - 'A']) {
+                alpha[ch - 'A'] = 1;
+                matrix[k / SIZE][k % SIZE] = ch;
+                k++;
+            }
+        }
+    }
+    for (char ch = 'A'; ch <= 'Z'; ch++) {
+        if (ch == 'J') continue;
+        if (!alpha[ch - 'A']) {
+            matrix[k / SIZE][k % SIZE] = ch;
+            k++;
+        }
+    }
+}
+
+void encrypt(char plaintext[], char matrix[SIZE][SIZE], char ciphertext[]) {
+    int len = strlen(plaintext);
+    char temp[100];
+    int j = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (isalpha(plaintext[i])) {
+            temp[j++] = toupper(plaintext[i]);
+        }
+    }
+    if (j % 2 != 0) {
+        temp[j++] = 'X'; // Padding
+    }
+    temp[j] = '\0';
+
+    for (int i = 0; i < j; i += 2) {
+        char a = temp[i];
+        char b = temp[i + 1];
+        int row1, col1, row2, col2;
+
+        for (int r = 0; r < SIZE; r++) {
+            for (int c = 0; c < SIZE; c++) {
+                if (
