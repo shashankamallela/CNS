@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+int modInverse(int a, int m) {
+    for (int x = 1; x < m; x++) {
+        if ((a * x) % m == 1) {
+            return x;
+        }
+    }
+    return -1;
+}
+
+void generateKeys(int *e, int *d, int *n) {
+    int p = 61, q = 53; // Two prime numbers
+    *n = p * q;
+    int phi = (p - 1) * (q - 1);
+    
+    *e = 17; // Public exponent
+    *d = modInverse(*e, phi);
+}
+
+int main() {
+    int e, d, n;
+    generateKeys(&e, &d, &n);
+    printf("Public Key: (e: %d, n: %d)\n", e, n);
+    printf("Private Key: (d: %d)\n", d);
+    return 0;
+}
